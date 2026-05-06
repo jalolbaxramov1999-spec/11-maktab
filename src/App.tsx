@@ -408,7 +408,12 @@ export default function App() {
       .from('school-images')
       .upload(filePath, file);
 
-    if (error) throw error;
+    if (error) {
+      if (error.message.includes('Bucket not found')) {
+        throw new Error("Supabase Storage-da 'school-images' nomli bucket topilmadi. Iltimos, Supabase dashboard-da 'school-images' nomli Public bucket yarating.");
+      }
+      throw error;
+    }
 
     const { data: { publicUrl } } = supabase.storage
       .from('school-images')
